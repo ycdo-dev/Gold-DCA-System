@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="km">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>កម្មវិធីគណនាការវិនិយោគមាស DCA (Physical Gold)</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- Google Fonts for Khmer -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Kantumruy Pro', sans-serif;
+    }
+  </style>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen py-8 px-4 sm:px-6 lg:px-8">
+
+  <div class="max-w-6xl mx-auto space-y-8">
+    
+    <!-- Header -->
+    <header class="text-center space-y-2">
+      <div class="inline-flex items-center gap-2 px-3 py-1 bg-amber-500/10 border border-amber-500/30 rounded-full text-amber-400 text-sm font-medium">
+        <span>🪙</span> យុទ្ធសាស្ត្រវិនិយោគមាសរូបវន្ត (Physical Gold)
+      </div>
+      <h1 class="text-3xl sm:text-4xl font-bold tracking-tight text-white">កម្មវិធីគណនាការវិនិយោគ DCA មាស</h1>
+      <p class="text-slate-400 max-w-2xl mx-auto text-sm sm:text-base">
+        គណនាផលចំណេញនៃការសន្សំមាសប្រចាំខែ (Dollar-Cost Averaging) ដោយគ្មាន Leverage គ្មានហានិភ័យ Margin Call និងកាត់បន្ថយសម្ពាធផ្លូវចិត្តពីទីផ្សារ។
+      </p>
+    </header>
+
+    <!-- Main Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+      
+      <!-- Input Controls (Left Column) -->
+      <section class="lg:col-span-4 bg-slate-800/80 border border-slate-700/60 rounded-2xl p-6 shadow-xl space-y-5">
+        <h2 class="text-lg font-semibold text-amber-400 border-b border-slate-700 pb-3 flex items-center gap-2">
+          <span>⚙️</span> កំណត់ប៉ារ៉ាម៉ែត្រវិនិយោគ
+        </h2>
+
+        <!-- Initial Capital -->
+        <div>
+          <div class="flex justify-between text-sm mb-1">
+            <span class="text-slate-300">ដើមទុនដំបូង ($)</span>
+            <span id="initialValText" class="font-bold text-amber-400">$10,000</span>
+          </div>
+          <input type="range" id="initialCapital" min="0" max="50000" step="500" value="10000"
+                 class="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-amber-500">
+        </div>
+
+        <!-- Monthly Contribution -->
+        <div>
+          <div class="flex justify-between text-sm mb-1">
+            <span class="text-slate-300">ទឹកប្រាក់ DCA ប្រចាំខែ ($)</span>
+            <span id="monthlyValText" class="font-bold text-amber-400">$300</span>
+          </div>
+          <input type="range" id="monthlyContribution" min="50" max="2000" step="50" value="300"
+                 class="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-amber-500">
+        </div>
+
+        <!-- Annual Growth Rate -->
+        <div>
+          <div class="flex justify-between text-sm mb-1">
+            <span class="text-slate-300">កំណើនមាសប្រចាំឆ្នាំ (%)</span>
+            <span id="rateValText" class="font-bold text-emerald-400">7.0%</span>
+          </div>
+          <input type="range" id="annualRate" min="1" max="15" step="0.5" value="7"
+                 class="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-emerald-500">
+          <p class="text-xs text-slate-400 mt-1">*ជាមធ្យមរយៈពេលវែងមាសកើនប្រមាណ ៦% ទៅ ៨% ក្នុងមួយឆ្នាំ</p>
+        </div>
+
+        <!-- Duration in Years -->
+        <div>
+          <div class="flex justify-between text-sm mb-1">
+            <span class="text-slate-300">រយៈពេលវិនិយោគ (ឆ្នាំ)</span>
+            <span id="yearsValText" class="font-bold text-amber-400">10 ឆ្នាំ</span>
+          </div>
+          <input type="range" id="investmentYears" min="1" max="25" step="1" value="10"
+                 class="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-amber-500">
+        </div>
+
+        <!-- Shop Spread Assumption -->
+        <div>
+          <div class="flex justify-between text-sm mb-1">
+            <span class="text-slate-300">គម្លាតទិញ-លក់ហាង (Spread %)</span>
+            <span id="spreadValText" class="font-bold text-rose-400">2.0%</span>
+          </div>
+          <input type="range" id="shopSpread" min="0.5" max="5.0" step="0.1" value="2.0"
+                 class="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-rose-500">
+          <p class="text-xs text-slate-400 mt-1">*គិតលើការកាត់ទឹក ឬ Spread ពេលលក់ចេញវិញ</p>
+        </div>
+
+      </section>
+
+      <!-- Results & Chart (Right Column) -->
+      <section class="lg:col-span-8 space-y-6">
+        
+        <!-- Summary Cards -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div class="bg-slate-800/80 border border-slate-700/60 rounded-xl p-4">
+            <div class="text-xs text-slate-400 uppercase tracking-wider mb-1">ដើមទុនសរុបដែលបានដាក់</div>
+            <div id="cardTotalInvested" class="text-2xl font-bold text-slate-100">$46,000</div>
+          </div>
+          <div class="bg-slate-800/80 border border-slate-700/60 rounded-xl p-4">
+            <div class="text-xs text-slate-400 uppercase tracking-wider mb-1">ប្រាក់ចំណេញសុទ្ធ (ក្រោយ Spread)</div>
+            <div id="cardNetProfit" class="text-2xl font-bold text-emerald-400">+$24,152</div>
+          </div>
+          <div class="bg-slate-800/80 border border-amber-500/40 rounded-xl p-4 bg-gradient-to-br from-amber-500/10 to-transparent">
+            <div class="text-xs text-amber-400 uppercase tracking-wider mb-1">តម្លៃទ្រព្យមាសសរុប</div>
+            <div id="cardFinalValue" class="text-2xl font-bold text-amber-300">$70,152</div>
+          </div>
+        </div>
+
+        <!-- Chart Container -->
+        <div class="bg-slate-800/80 border border-slate-700/60 rounded-2xl p-6 shadow-xl">
+          <div class="flex justify-between items-center mb-4">
+            <h3 class="text-base font-semibold text-slate-200">ការព្យាករណ៍តម្លៃទ្រព្យមធ្យមភាគប្រចាំឆ្នាំ</h3>
+            <span class="text-xs text-slate-400">ឯកតាគិតជាដុល្លារ ($)</span>
+          </div>
+          <div class="relative h-72 sm:h-80 w-full">
+            <canvas id="dcaChart"></canvas>
+          </div>
+        </div>
+
+        <!-- Rules & Highlights -->
+        <div class="bg-slate-800/50 border border-slate-700/40 rounded-xl p-5 text-sm text-slate-300 space-y-2">
+          <div class="font-medium text-amber-400 flex items-center gap-1.5">
+            <span>💡</span> ចំណុចសំខាន់សម្រាប់យុទ្ធសាស្ត្រ DCA មាសរូបវន្ត៖
+          </div>
+          <ul class="list-disc list-inside space-y-1 text-slate-400 text-xs sm:text-sm">
+            <li><strong>គ្មានសម្ពាធ Liquidation:</strong> មាសដុំមិនរងផលប៉ះពាល់ពីការប្រែប្រួលខ្លាំងក្នុងរយៈពេលខ្លីដូច XAUUSD ឡើយ។</li>
+            <li><strong>ថ្លៃដើមប្រតិបត្តិការ:</strong> ការទិញខ្នាតធំ (ឧ. តម្លឹង ឬ គីឡូ) មាន Spread ទាបជាងការទិញខ្នាតតូច (ជី)។</li>
+            <li><strong>វិន័យ DCA:</strong> រក្សាការទិញទៀងទាត់តាមកាលកំណត់ ដោយមិនបារម្ភថាតម្លៃកំពុងឡើង ឬចុះ។</li>
+          </ul>
+        </div>
+
+      </section>
+
+    </div>
+
+  </div>
+
+  <script>
+    // State Elements
+    const initialInput = document.getElementById('initialCapital');
+    const monthlyInput = document.getElementById('monthlyContribution');
+    const rateInput = document.getElementById('annualRate');
+    const yearsInput = document.getElementById('investmentYears');
+    const spreadInput = document.getElementById('shopSpread');
+
+    const initialValText = document.getElementById('initialValText');
+    const monthlyValText = document.getElementById('monthlyValText');
+    const rateValText = document.getElementById('rateValText');
+    const yearsValText = document.getElementById('yearsValText');
+    const spreadValText = document.getElementById('spreadValText');
+
+    const cardTotalInvested = document.getElementById('cardTotalInvested');
+    const cardNetProfit = document.getElementById('cardNetProfit');
+    const cardFinalValue = document.getElementById('cardFinalValue');
+
+    // Chart.js instance setup
+    let dcaChart = null;
+
+    function formatCurrency(amount) {
+      return '$' + Math.round(amount).toLocaleString('en-US');
+    }
+
+    function calculateDCA() {
+      const initial = parseFloat(initialInput.value);
+      const monthly = parseFloat(monthlyInput.value);
+      const rate = parseFloat(rateInput.value) / 100;
+      const years = parseInt(yearsInput.value);
+      const spread = parseFloat(spreadInput.value) / 100;
+
+      // Update text displays
+      initialValText.textContent = formatCurrency(initial);
+      monthlyValText.textContent = formatCurrency(monthly);
+      rateValText.textContent = (rate * 100).toFixed(1) + '%';
+      yearsValText.textContent = years + ' ឆ្នាំ';
+      spreadValText.textContent = (spread * 100).toFixed(1) + '%';
+
+      const labels = [];
+      const investedData = [];
+      const portfolioData = [];
+
+      const monthlyRate = rate / 12;
+
+      let currentPortfolio = initial;
+      let currentInvested = initial;
+
+      labels.push('ឆ្នាំ 0');
+      investedData.push(currentInvested);
+      portfolioData.push(currentPortfolio);
+
+      for (let y = 1; y <= years; y++) {
+        for (let m = 1; m <= 12; m++) {
+          currentPortfolio = currentPortfolio * (1 + monthlyRate) + monthly;
+          currentInvested += monthly;
+        }
+        labels.push(`ឆ្នាំ ${y}`);
+        investedData.push(currentInvested);
+        portfolioData.push(Math.round(currentPortfolio));
+      }
+
+      // Value after spread deduction upon selling
+      const netFinalValue = currentPortfolio * (1 - spread);
+      const netProfit = netFinalValue - currentInvested;
+
+      // Update UI cards
+      cardTotalInvested.textContent = formatCurrency(currentInvested);
+      cardFinalValue.textContent = formatCurrency(netFinalValue);
+      cardNetProfit.textContent = (netProfit >= 0 ? '+' : '') + formatCurrency(netProfit);
+      cardNetProfit.className = netProfit >= 0 ? 'text-2xl font-bold text-emerald-400' : 'text-2xl font-bold text-rose-400';
+
+      updateChart(labels, investedData, portfolioData);
+    }
+
+    function updateChart(labels, investedData, portfolioData) {
+      if (dcaChart) {
+        dcaChart.data.labels = labels;
+        dcaChart.data.datasets[0].data = portfolioData;
+        dcaChart.data.datasets[1].data = investedData;
+        dcaChart.update();
+      } else {
+        const ctx = document.getElementById('dcaChart').getContext('2d');
+        dcaChart = new Chart(ctx, {
+          type: 'line',
+          data: {
+            labels: labels,
+            datasets: [
+              {
+                label: 'តម្លៃទ្រព្យមាសសរុប (DCA + កំណើន)',
+                data: portfolioData,
+                borderColor: '#f59e0b',
+                backgroundColor: 'rgba(245, 158, 11, 0.15)',
+                borderWidth: 2.5,
+                fill: true,
+                tension: 0.25,
+                pointRadius: 3,
+                pointBackgroundColor: '#f59e0b'
+              },
+              {
+                label: 'ដើមទុនវិនិយោគសរុប (Total Invested)',
+                data: investedData,
+                borderColor: '#64748b',
+                backgroundColor: 'transparent',
+                borderWidth: 2,
+                borderDash: [5, 5],
+                pointRadius: 2,
+                tension: 0
+              }
+            ]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            interaction: {
+              intersect: false,
+              mode: 'index',
+            },
+            plugins: {
+              legend: {
+                position: 'top',
+                labels: {
+                  color: '#94a3b8',
+                  font: { family: "'Kantumruy Pro', sans-serif" }
+                }
+              },
+              tooltip: {
+                callbacks: {
+                  label: function(context) {
+                    return context.dataset.label + ': $' + context.raw.toLocaleString();
+                  }
+                }
+              }
+            },
+            scales: {
+              x: {
+                grid: { color: 'rgba(51, 65, 85, 0.3)' },
+                ticks: { color: '#94a3b8' }
+              },
+              y: {
+                grid: { color: 'rgba(51, 65, 85, 0.3)' },
+                ticks: {
+                  color: '#94a3b8',
+                  callback: function(value) {
+                    return '$' + value.toLocaleString();
+                  }
+                }
+              }
+            }
+          }
+        });
+      }
+    }
+
+    // Attach listeners
+    [initialInput, monthlyInput, rateInput, yearsInput, spreadInput].forEach(el => {
+      el.addEventListener('input', calculateDCA);
+    });
+
+    // Initial calculation on load
+    calculateDCA();
+  </script>
+</body>
+</html>
