@@ -3,138 +3,388 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>កម្មវិធីគណនាការវិនិយោគមាស DCA (Physical Gold)</title>
+  <title>មជ្ឈមណ្ឌលវិភាគ និងវិនិយោគមាស (Gold Investment Hub)</title>
+  
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Chart.js CDN -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <!-- Google Fonts for Khmer -->
+  <!-- Google Fonts: Kantumruy Pro & Inter -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Kantumruy+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            khmer: ['"Kantumruy Pro"', 'sans-serif'],
+            sans: ['Inter', '"Kantumruy Pro"', 'sans-serif'],
+          },
+          colors: {
+            gold: {
+              400: '#fbbf24',
+              500: '#f59e0b',
+              600: '#d97706',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
   <style>
     body {
-      font-family: 'Kantumruy Pro', sans-serif;
+      font-family: 'Kantumruy Pro', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+    input[type=range] {
+      accent-color: #f59e0b;
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: #0f172a;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #334155;
+      border-radius: 4px;
     }
   </style>
 </head>
-<body class="bg-slate-900 text-slate-100 min-h-screen py-8 px-4 sm:px-6 lg:px-8">
 
-  <div class="max-w-6xl mx-auto space-y-8">
-    
-    <!-- Header -->
-    <header class="text-center space-y-2">
-      <div class="inline-flex items-center gap-2 px-3 py-1 bg-amber-500/10 border border-amber-500/30 rounded-full text-amber-400 text-sm font-medium">
-        <span>🪙</span> យុទ្ធសាស្ត្រវិនិយោគមាសរូបវន្ត (Physical Gold)
+<body class="bg-slate-950 text-slate-100 min-h-screen py-6 px-3 sm:px-6 lg:px-8 selection:bg-amber-500 selection:text-slate-950">
+
+  <div class="max-w-6xl mx-auto space-y-6">
+
+    <!-- Top Header & Mode Switcher -->
+    <header class="bg-slate-900/90 border border-amber-500/20 rounded-3xl p-5 sm:p-7 shadow-2xl backdrop-blur-md flex flex-col md:flex-row justify-between items-start md:items-center gap-6 relative overflow-hidden">
+      <!-- Ambient Gold Glow Effect -->
+      <div class="absolute -top-12 -left-12 w-48 h-48 bg-amber-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+      <div class="flex items-center gap-4 sm:gap-5 z-10">
+        <!-- Logo Image with Gold Ring & Fallback -->
+        <div class="relative group shrink-0">
+          <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-full p-0.5 bg-gradient-to-tr from-amber-500 via-amber-300 to-yellow-600 shadow-lg shadow-amber-500/20">
+            <img 
+              src="https://cdn.phototourl.com/member/2026-09-29-1ea781f7-f92f-4469-b36e-5992da0fc319.png" 
+              alt="GOLDEN EDGE COMMUNITY" 
+              class="w-full h-full object-cover rounded-full bg-black"
+              onerror="this.style.display='none'; document.getElementById('logoFallback').classList.remove('hidden');"
+            />
+            <!-- Fallback SVG Badge if image isn't available in directory -->
+            <div id="logoFallback" class="hidden w-full h-full bg-slate-950 rounded-full flex flex-col items-center justify-center text-amber-400 p-1">
+              <svg class="w-7 h-7 sm:w-8 sm:h-8" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 2L4 5v6.09c0 5.05 3.41 9.76 8 10.91 4.59-1.15 8-5.86 8-10.91V5l-8-3zm0 2.18l6 2.25v4.66c0 4.13-2.73 7.99-6 9-3.27-1.01-6-4.87-6-9V6.43l6-2.25zM11 7v2h2V7h-2zm0 3v5h2v-5h-2z"/>
+              </svg>
+              <span class="text-[7px] font-bold tracking-tighter text-amber-300">G-EDGE</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="space-y-1">
+          <div class="flex items-center gap-2">
+            <span class="text-xs uppercase tracking-widest font-extrabold bg-gradient-to-r from-amber-300 via-amber-400 to-yellow-500 bg-clip-text text-transparent">
+              GOLDEN EDGE COMMUNITY
+            </span>
+            <span class="text-[10px] px-2 py-0.5 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 font-medium">
+              LEARN • EARN • GROW
+            </span>
+          </div>
+          <h1 class="text-xl sm:text-2xl lg:text-3xl font-bold tracking-tight text-white flex flex-wrap items-center gap-2">
+            ប្រព័ន្ធវិភាគយុទ្ធសាស្ត្រមាស <span id="headerModeLabel" class="text-amber-400 font-extrabold text-lg sm:text-2xl">| មាសដុំរូបវន្ត DCA</span>
+          </h1>
+          <p class="text-xs sm:text-sm text-slate-400 max-w-xl">
+            ប្រៀបធៀប និងគ្រប់គ្រងការវិនិយោគរវាងមាសដុំសុទ្ធ (គ្មាន Leverage គ្មាន liquidation) និងទីផ្សារជួញដូរ CFD XAUUSD (Zero Swap, 10%/ខែ)។
+          </p>
+        </div>
       </div>
-      <h1 class="text-3xl sm:text-4xl font-bold tracking-tight text-white">កម្មវិធីគណនាការវិនិយោគ DCA មាស</h1>
-      <p class="text-slate-400 max-w-2xl mx-auto text-sm sm:text-base">
-        គណនាផលចំណេញនៃការសន្សំមាសប្រចាំខែ (Dollar-Cost Averaging) ដោយគ្មាន Leverage គ្មានហានិភ័យ Margin Call និងកាត់បន្ថយសម្ពាធផ្លូវចិត្តពីទីផ្សារ។
-      </p>
+
+      <!-- Mode Switch Toggle Button -->
+      <div class="w-full md:w-auto bg-slate-950 p-1.5 rounded-2xl border border-slate-800 shadow-inner flex items-center self-stretch md:self-auto z-10">
+        <button id="btnModePhysical" type="button" class="flex-1 md:flex-initial px-4 sm:px-6 py-2.5 rounded-xl font-semibold text-xs sm:text-sm transition-all duration-200 flex items-center justify-center gap-2 bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 shadow-lg shadow-amber-500/20">
+          <span>🪙</span>
+          <span>មាសដុំរូបវន្ត (DCA)</span>
+        </button>
+        <button id="btnModeCfd" type="button" class="flex-1 md:flex-initial px-4 sm:px-6 py-2.5 rounded-xl font-semibold text-xs sm:text-sm transition-all duration-200 flex items-center justify-center gap-2 text-slate-400 hover:text-slate-200">
+          <span>⚡</span>
+          <span>ជួញដូរ CFD (10%/ខែ)</span>
+        </button>
+      </div>
     </header>
 
-    <!-- Main Grid -->
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-      
-      <!-- Input Controls (Left Column) -->
-      <section class="lg:col-span-4 bg-slate-800/80 border border-slate-700/60 rounded-2xl p-6 shadow-xl space-y-5">
-        <h2 class="text-lg font-semibold text-amber-400 border-b border-slate-700 pb-3 flex items-center gap-2">
-          <span>⚙️</span> កំណត់ប៉ារ៉ាម៉ែត្រវិនិយោគ
-        </h2>
+    <!-- Sub-status Bar -->
+    <div id="statusBar" class="flex flex-wrap items-center justify-between gap-3 px-5 py-3 rounded-2xl bg-slate-900/60 border border-slate-800/80 text-xs sm:text-sm">
+      <div class="flex items-center gap-2 text-slate-300">
+        <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span id="statusDescription">យុទ្ធសាស្ត្រសន្សំរយៈពេលវែង • គ្មានហានិភ័យបែកគណនី • កាត់បន្ថយ Spread</span>
+      </div>
+      <div class="flex items-center gap-3">
+        <span class="text-slate-400">ដើមទុនបច្ចុប្បន្ន៖</span>
+        <span id="badgeCapital" class="font-bold text-amber-400 bg-amber-500/10 px-2.5 py-0.5 rounded-lg border border-amber-500/30">$10,000</span>
+      </div>
+    </div>
 
-        <!-- Initial Capital -->
-        <div>
-          <div class="flex justify-between text-sm mb-1">
-            <span class="text-slate-300">ដើមទុនដំបូង ($)</span>
-            <span id="initialValText" class="font-bold text-amber-400">$10,000</span>
-          </div>
-          <input type="range" id="initialCapital" min="0" max="50000" step="500" value="10000"
-                 class="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-amber-500">
+    <!-- Main Workspace Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+
+      <!-- Left Column: Input Form (5 cols) -->
+      <section class="lg:col-span-5 bg-slate-900 border border-slate-800 rounded-3xl p-5 sm:p-6 shadow-xl space-y-6">
+        <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+          <h2 class="text-base font-semibold text-slate-200 flex items-center gap-2">
+            <span>⚙️</span>
+            <span id="panelTitle">កំណត់ប៉ារ៉ាម៉ែត្រមាសដុំ</span>
+          </h2>
+          <button id="btnReset" type="button" class="text-xs text-amber-400 hover:text-amber-300 transition-colors">
+            កំណត់ឡើងវិញ
+          </button>
         </div>
 
-        <!-- Monthly Contribution -->
-        <div>
-          <div class="flex justify-between text-sm mb-1">
-            <span class="text-slate-300">ទឹកប្រាក់ DCA ប្រចាំខែ ($)</span>
-            <span id="monthlyValText" class="font-bold text-amber-400">$300</span>
+        <!-- SHARED: Initial Capital Slider -->
+        <div class="space-y-1.5">
+          <div class="flex justify-between items-center text-xs sm:text-sm">
+            <span class="text-slate-300">ដើមទុនដំបូង (Initial Capital)</span>
+            <span id="valInitialCapital" class="font-bold text-amber-400 text-sm sm:text-base">$10,000</span>
           </div>
-          <input type="range" id="monthlyContribution" min="50" max="2000" step="50" value="300"
-                 class="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-amber-500">
+          <input type="range" id="inputInitialCapital" min="1000" max="50000" step="500" value="10000" class="w-full h-2 bg-slate-800 rounded-lg cursor-pointer">
+          <div class="flex justify-between text-[10px] text-slate-500">
+            <span>$1,000</span>
+            <span>$25,000</span>
+            <span>$50,000</span>
+          </div>
         </div>
 
-        <!-- Annual Growth Rate -->
-        <div>
-          <div class="flex justify-between text-sm mb-1">
-            <span class="text-slate-300">កំណើនមាសប្រចាំឆ្នាំ (%)</span>
-            <span id="rateValText" class="font-bold text-emerald-400">7.0%</span>
+        <!-- MODE 1 EXCLUSIVE INPUTS: PHYSICAL GOLD DCA -->
+        <div id="physicalInputs" class="space-y-5">
+          <!-- Monthly DCA -->
+          <div class="space-y-1.5">
+            <div class="flex justify-between items-center text-xs sm:text-sm">
+              <span class="text-slate-300">ទឹកប្រាក់ DCA បន្ថែមប្រចាំខែ</span>
+              <span id="valMonthlyDca" class="font-bold text-amber-400 text-sm sm:text-base">$300</span>
+            </div>
+            <input type="range" id="inputMonthlyDca" min="50" max="2000" step="50" value="300" class="w-full h-2 bg-slate-800 rounded-lg cursor-pointer">
+            <div class="flex justify-between text-[10px] text-slate-500">
+              <span>$50 (ប្រហែល ១ ជី)</span>
+              <span>$1,000</span>
+              <span>$2,000</span>
+            </div>
           </div>
-          <input type="range" id="annualRate" min="1" max="15" step="0.5" value="7"
-                 class="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-emerald-500">
-          <p class="text-xs text-slate-400 mt-1">*ជាមធ្យមរយៈពេលវែងមាសកើនប្រមាណ ៦% ទៅ ៨% ក្នុងមួយឆ្នាំ</p>
+
+          <!-- Annual Growth Rate -->
+          <div class="space-y-1.5">
+            <div class="flex justify-between items-center text-xs sm:text-sm">
+              <span class="text-slate-300">កំណើនតម្លៃមាសប្រចាំឆ្នាំ (%)</span>
+              <span id="valAnnualGrowth" class="font-bold text-emerald-400 text-sm sm:text-base">7.0%</span>
+            </div>
+            <input type="range" id="inputAnnualGrowth" min="2" max="15" step="0.5" value="7.0" class="w-full h-2 bg-slate-800 rounded-lg cursor-pointer">
+            <p class="text-[11px] text-slate-500">*មធ្យមភាគប្រវត្តិសាស្ត្រមាសកើនពី ៦% ទៅ ៨% ក្នុងមួយឆ្នាំ</p>
+          </div>
+
+          <!-- Duration (Years) -->
+          <div class="space-y-1.5">
+            <div class="flex justify-between items-center text-xs sm:text-sm">
+              <span class="text-slate-300">រយៈពេលសន្សំ (ឆ្នាំ)</span>
+              <span id="valYears" class="font-bold text-indigo-400 text-sm sm:text-base">10 ឆ្នាំ</span>
+            </div>
+            <input type="range" id="inputYears" min="1" max="25" step="1" value="10" class="w-full h-2 bg-slate-800 rounded-lg cursor-pointer">
+            <div class="flex justify-between text-[10px] text-slate-500">
+              <span>1 ឆ្នាំ</span>
+              <span>10 ឆ្នាំ</span>
+              <span>25 ឆ្នាំ</span>
+            </div>
+          </div>
+
+          <!-- Shop Spread / Fee -->
+          <div class="space-y-1.5">
+            <div class="flex justify-between items-center text-xs sm:text-sm">
+              <span class="text-slate-300">គម្លាតទិញ-លក់ហាង / ថ្លៃកាត់ទឹក (Spread)</span>
+              <span id="valSpread" class="font-bold text-rose-400 text-sm sm:text-base">2.0%</span>
+            </div>
+            <input type="range" id="inputSpread" min="0.5" max="5.0" step="0.1" value="2.0" class="w-full h-2 bg-slate-800 rounded-lg cursor-pointer">
+            <p class="text-[11px] text-slate-500">*គម្លាតទិញ-លក់នៅពេលអ្នកយកទៅលក់ចេញវិញ</p>
+          </div>
         </div>
 
-        <!-- Duration in Years -->
-        <div>
-          <div class="flex justify-between text-sm mb-1">
-            <span class="text-slate-300">រយៈពេលវិនិយោគ (ឆ្នាំ)</span>
-            <span id="yearsValText" class="font-bold text-amber-400">10 ឆ្នាំ</span>
+        <!-- MODE 2 EXCLUSIVE INPUTS: CFD TRADING -->
+        <div id="cfdInputs" class="space-y-5 hidden">
+          <!-- Monthly Target % -->
+          <div class="space-y-1.5">
+            <div class="flex justify-between items-center text-xs sm:text-sm">
+              <span class="text-slate-300">គោលដៅចំណេញប្រចាំខែ (%)</span>
+              <span id="valCfdTarget" class="font-bold text-emerald-400 text-sm sm:text-base">10%</span>
+            </div>
+            <input type="range" id="inputCfdTarget" min="2" max="25" step="1" value="10" class="w-full h-2 bg-slate-800 rounded-lg cursor-pointer">
+            <div class="flex justify-between text-[10px] text-slate-500">
+              <span>2% (Safe)</span>
+              <span>10% (គោលដៅ)</span>
+              <span>25% (High Risk)</span>
+            </div>
           </div>
-          <input type="range" id="investmentYears" min="1" max="25" step="1" value="10"
-                 class="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-amber-500">
-        </div>
 
-        <!-- Shop Spread Assumption -->
-        <div>
-          <div class="flex justify-between text-sm mb-1">
-            <span class="text-slate-300">គម្លាតទិញ-លក់ហាង (Spread %)</span>
-            <span id="spreadValText" class="font-bold text-rose-400">2.0%</span>
+          <!-- Risk % per Trade -->
+          <div class="space-y-1.5">
+            <div class="flex justify-between items-center text-xs sm:text-sm">
+              <span class="text-slate-300">ហានិភ័យក្នុងមួយ Trade (Risk %)</span>
+              <span id="valCfdRisk" class="font-bold text-rose-400 text-sm sm:text-base">1.0%</span>
+            </div>
+            <input type="range" id="inputCfdRisk" min="0.5" max="3.0" step="0.25" value="1.0" class="w-full h-2 bg-slate-800 rounded-lg cursor-pointer">
+            <div class="flex justify-between text-[10px] text-slate-500">
+              <span>0.5% (អភិរក្ស)</span>
+              <span>1.0% (ស្តង់ដារ)</span>
+              <span>3.0% (ប្រថុយខ្ពស់)</span>
+            </div>
           </div>
-          <input type="range" id="shopSpread" min="0.5" max="5.0" step="0.1" value="2.0"
-                 class="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-rose-500">
-          <p class="text-xs text-slate-400 mt-1">*គិតលើការកាត់ទឹក ឬ Spread ពេលលក់ចេញវិញ</p>
+
+          <!-- Stop Loss Pips / $ Gold -->
+          <div class="space-y-1.5">
+            <div class="flex justify-between items-center text-xs sm:text-sm">
+              <span class="text-slate-300">ទំហំ Stop Loss (Pips / $ មាស)</span>
+              <span id="valCfdSl" class="font-bold text-amber-400 text-sm sm:text-base">30 pips ($3.0)</span>
+            </div>
+            <input type="range" id="inputCfdSl" min="15" max="100" step="5" value="30" class="w-full h-2 bg-slate-800 rounded-lg cursor-pointer">
+            <div class="flex justify-between text-[10px] text-slate-500">
+              <span>15 pips ($1.5)</span>
+              <span>50 pips ($5.0)</span>
+              <span>100 pips ($10.0)</span>
+            </div>
+          </div>
+
+          <!-- Risk to Reward (R:R) -->
+          <div class="space-y-1.5">
+            <div class="flex justify-between items-center text-xs sm:text-sm">
+              <span class="text-slate-300">សមាមាត្រចំណេញ (Risk : Reward)</span>
+              <span id="valCfdRr" class="font-bold text-cyan-400 text-sm sm:text-base">1 : 1.5</span>
+            </div>
+            <input type="range" id="inputCfdRr" min="1.0" max="3.0" step="0.25" value="1.5" class="w-full h-2 bg-slate-800 rounded-lg cursor-pointer">
+            <div class="flex justify-between text-[10px] text-slate-500">
+              <span>1 : 1</span>
+              <span>1 : 1.5</span>
+              <span>1 : 3</span>
+            </div>
+          </div>
+
+          <!-- Compounding Months -->
+          <div class="space-y-1.5">
+            <div class="flex justify-between items-center text-xs sm:text-sm">
+              <span class="text-slate-300">រយៈពេលជួញដូរ (ខែ)</span>
+              <span id="valCfdMonths" class="font-bold text-indigo-400 text-sm sm:text-base">12 ខែ</span>
+            </div>
+            <input type="range" id="inputCfdMonths" min="3" max="24" step="1" value="12" class="w-full h-2 bg-slate-800 rounded-lg cursor-pointer">
+            <div class="flex justify-between text-[10px] text-slate-500">
+              <span>3 ខែ</span>
+              <span>12 ខែ (១ ឆ្នាំ)</span>
+              <span>24 ខែ (២ ឆ្នាំ)</span>
+            </div>
+          </div>
         </div>
 
       </section>
 
-      <!-- Results & Chart (Right Column) -->
-      <section class="lg:col-span-8 space-y-6">
+      <!-- Right Column: Analytics, Chart & Rules (7 cols) -->
+      <section class="lg:col-span-7 space-y-6">
+
+        <!-- METRIC CARDS: Dynamic Switching Grid -->
         
-        <!-- Summary Cards -->
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <div class="bg-slate-800/80 border border-slate-700/60 rounded-xl p-4">
-            <div class="text-xs text-slate-400 uppercase tracking-wider mb-1">ដើមទុនសរុបដែលបានដាក់</div>
-            <div id="cardTotalInvested" class="text-2xl font-bold text-slate-100">$46,000</div>
+        <!-- Physical Gold Cards -->
+        <div id="physicalCards" class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+          <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 flex flex-col justify-between">
+            <span class="text-xs text-slate-400">ដើមទុនសរុបបានដាក់</span>
+            <span id="outPhysTotalInvested" class="text-xl sm:text-2xl font-bold text-white mt-1">$46,000</span>
+            <span class="text-[11px] text-slate-500 mt-0.5">Initial + Monthly DCA</span>
           </div>
-          <div class="bg-slate-800/80 border border-slate-700/60 rounded-xl p-4">
-            <div class="text-xs text-slate-400 uppercase tracking-wider mb-1">ប្រាក់ចំណេញសុទ្ធ (ក្រោយ Spread)</div>
-            <div id="cardNetProfit" class="text-2xl font-bold text-emerald-400">+$24,152</div>
+
+          <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 flex flex-col justify-between">
+            <span class="text-xs text-slate-400">ចំណេញសុទ្ធ (ដក Spread)</span>
+            <span id="outPhysNetProfit" class="text-xl sm:text-2xl font-bold text-emerald-400 mt-1">+$24,152</span>
+            <span id="outPhysRoi" class="text-[11px] text-emerald-500 mt-0.5">+52.5% ROI</span>
           </div>
-          <div class="bg-slate-800/80 border border-amber-500/40 rounded-xl p-4 bg-gradient-to-br from-amber-500/10 to-transparent">
-            <div class="text-xs text-amber-400 uppercase tracking-wider mb-1">តម្លៃទ្រព្យមាសសរុប</div>
-            <div id="cardFinalValue" class="text-2xl font-bold text-amber-300">$70,152</div>
+
+          <div class="bg-slate-900 border border-amber-500/40 rounded-2xl p-4 bg-gradient-to-br from-amber-500/10 to-transparent flex flex-col justify-between col-span-2 sm:col-span-1">
+            <span class="text-xs text-amber-400 font-medium">តម្លៃទ្រព្យមាសសរុប</span>
+            <span id="outPhysFinalValue" class="text-xl sm:text-2xl font-bold text-amber-300 mt-1">$70,152</span>
+            <span id="outPhysWeightEstimate" class="text-[11px] text-amber-400/80 mt-0.5">~22.8 តម្លឹង (ប៉ាន់ស្មាន)</span>
           </div>
         </div>
 
-        <!-- Chart Container -->
-        <div class="bg-slate-800/80 border border-slate-700/60 rounded-2xl p-6 shadow-xl">
-          <div class="flex justify-between items-center mb-4">
-            <h3 class="text-base font-semibold text-slate-200">ការព្យាករណ៍តម្លៃទ្រព្យមធ្យមភាគប្រចាំឆ្នាំ</h3>
-            <span class="text-xs text-slate-400">ឯកតាគិតជាដុល្លារ ($)</span>
+        <!-- CFD Gold Cards -->
+        <div id="cfdCards" class="grid grid-cols-2 sm:grid-cols-3 gap-3 hidden">
+          <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 flex flex-col justify-between">
+            <span class="text-xs text-slate-400">ទំហំ Lot សុវត្ថិភាព</span>
+            <span id="outCfdLotSize" class="text-xl sm:text-2xl font-bold text-amber-400 mt-1">0.33 Lot</span>
+            <span class="text-[11px] text-slate-500 mt-0.5">Standard Lot 1:100</span>
           </div>
-          <div class="relative h-72 sm:h-80 w-full">
-            <canvas id="dcaChart"></canvas>
+
+          <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 flex flex-col justify-between">
+            <span class="text-xs text-slate-400">ប្រថុយក្នុងមួយ Trade</span>
+            <span id="outCfdRiskDollar" class="text-xl sm:text-2xl font-bold text-rose-400 mt-1">$100.00</span>
+            <span id="outCfdRiskPct" class="text-[11px] text-slate-500 mt-0.5">1.0% នៃទុនដើម</span>
+          </div>
+
+          <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 flex flex-col justify-between">
+            <span class="text-xs text-slate-400">ផលចំណេញ (TP)</span>
+            <span id="outCfdRewardDollar" class="text-xl sm:text-2xl font-bold text-emerald-400 mt-1">+$150.00</span>
+            <span id="outCfdTpPips" class="text-[11px] text-emerald-500 mt-0.5">TP: 45 pips ($4.5)</span>
+          </div>
+
+          <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 flex flex-col justify-between">
+            <span class="text-xs text-slate-400">គោលដៅខែទី ១</span>
+            <span id="outCfdTargetM1" class="text-xl sm:text-2xl font-bold text-white mt-1">+$1,000</span>
+            <span class="text-[11px] text-emerald-400 mt-0.5">+10% ប្រចាំខែ</span>
+          </div>
+
+          <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 flex flex-col justify-between">
+            <span class="text-xs text-slate-400">គោលដៅប្រចាំថ្ងៃ</span>
+            <span id="outCfdDailyTarget" class="text-xl sm:text-2xl font-bold text-cyan-400 mt-1">$50.00</span>
+            <span class="text-[11px] text-slate-500 mt-0.5">មធ្យមភាគ ២០ ថ្ងៃជួញដូរ</span>
+          </div>
+
+          <div class="bg-slate-900 border border-amber-500/40 rounded-2xl p-4 bg-gradient-to-br from-amber-500/10 to-transparent flex flex-col justify-between">
+            <span class="text-xs text-amber-400 font-medium">សមតុល្យគុណពូន</span>
+            <span id="outCfdFinalBalance" class="text-xl sm:text-2xl font-bold text-amber-300 mt-1">$31,384</span>
+            <span id="outCfdDurationTag" class="text-[11px] text-amber-400/80 mt-0.5">ក្រោយ ១២ ខែ</span>
           </div>
         </div>
 
-        <!-- Rules & Highlights -->
-        <div class="bg-slate-800/50 border border-slate-700/40 rounded-xl p-5 text-sm text-slate-300 space-y-2">
-          <div class="font-medium text-amber-400 flex items-center gap-1.5">
-            <span>💡</span> ចំណុចសំខាន់សម្រាប់យុទ្ធសាស្ត្រ DCA មាសរូបវន្ត៖
+        <!-- Universal Interactive Chart -->
+        <div class="bg-slate-900 border border-slate-800 rounded-3xl p-5 shadow-xl">
+          <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-4">
+            <div>
+              <h3 id="chartTitle" class="text-sm font-semibold text-slate-200">
+                📈 ការព្យាករណ៍តម្លៃទ្រព្យមាសសរុប (DCA + កំណើនប្រចាំឆ្នាំ)
+              </h3>
+              <p id="chartSubtitle" class="text-xs text-slate-500">គណនាជាមធ្យមភាគប្រចាំឆ្នាំ រួមទាំងការកាត់ទឹក Spread</p>
+            </div>
+            <span class="text-xs font-mono text-slate-400 bg-slate-800 px-2.5 py-1 rounded-lg">USD ($)</span>
           </div>
-          <ul class="list-disc list-inside space-y-1 text-slate-400 text-xs sm:text-sm">
-            <li><strong>គ្មានសម្ពាធ Liquidation:</strong> មាសដុំមិនរងផលប៉ះពាល់ពីការប្រែប្រួលខ្លាំងក្នុងរយៈពេលខ្លីដូច XAUUSD ឡើយ។</li>
-            <li><strong>ថ្លៃដើមប្រតិបត្តិការ:</strong> ការទិញខ្នាតធំ (ឧ. តម្លឹង ឬ គីឡូ) មាន Spread ទាបជាងការទិញខ្នាតតូច (ជី)។</li>
-            <li><strong>វិន័យ DCA:</strong> រក្សាការទិញទៀងទាត់តាមកាលកំណត់ ដោយមិនបារម្ភថាតម្លៃកំពុងឡើង ឬចុះ។</li>
+
+          <div class="h-64 sm:h-72 w-full relative">
+            <canvas id="unifiedChart"></canvas>
+          </div>
+        </div>
+
+        <!-- Contextual Strategy / Risk Rules Card -->
+        <div id="physicalRules" class="bg-slate-900/90 border border-amber-500/30 rounded-2xl p-4 sm:p-5 space-y-2">
+          <h4 class="text-xs sm:text-sm font-bold text-amber-400 flex items-center gap-2">
+            <span>🛡️ ច្បាប់ដែកនៃការសន្សំមាសដុំរូបវន្ត (Physical DCA Mastery)</span>
+          </h4>
+          <ul class="text-xs sm:text-sm text-slate-300 space-y-1.5 list-disc list-inside">
+            <li><strong class="text-white">សន្សំជាខ្នាតស្តង់ដារ:</strong> ទិញជាខ្នាតកន្លះតម្លឹង (៥ ជី) ឬ ១ តម្លឹងឡើង ដើម្បីទទួលបានគម្លាត Spread និងថ្លៃពុម្ពទាបបំផុត។</li>
+            <li><strong class="text-white">ទិញហាងណា លក់ហាងនោះ:</strong> រក្សាទុកកញ្ចប់បិទជិត និងវិក្កយបត្រដើម ដើម្បីចៀសវាងការត្រូវគេកាត់ទឹកបន្ថែមពេលលក់ចេញ។</li>
+            <li><strong class="text-white">វិន័យកាលបរិច្ឆេទ:</strong> កុំព្យាយាមស្ទាក់មើលតម្លៃឡើងចុះប្រចាំថ្ងៃ។ ចូលទិញតាមកាលកំណត់ជារៀងរាល់ខែ។</li>
+          </ul>
+        </div>
+
+        <div id="cfdRules" class="bg-slate-900/90 border border-rose-500/30 rounded-2xl p-4 sm:p-5 space-y-2 hidden">
+          <h4 class="text-xs sm:text-sm font-bold text-rose-400 flex items-center gap-2">
+            <span>⚠️ ច្បាប់គ្រប់គ្រងហានិភ័យ CFD XAUUSD (Drawdown Discipline)</span>
+          </h4>
+          <ul class="text-xs sm:text-sm text-slate-300 space-y-1.5 list-disc list-inside">
+            <li><strong class="text-white">Max Daily Loss:</strong> បើខាតដល់ <span id="cfdMaxDailyLoss" class="text-rose-400 font-bold">$200 (2%)</span> ក្នុងមួយថ្ងៃ ត្រូវបិទកុំព្យូទ័រឈប់ Trade ភ្លាម!</li>
+            <li><strong class="text-white">Max Monthly Drawdown:</strong> បើខាតបង់ដល់ <span id="cfdMaxMonthlyLoss" class="text-rose-400 font-bold">$500 (5%)</span> ក្នុងមួយខែ ត្រូវកាត់បន្ថយ Lot Size ពាក់កណ្តាល។</li>
+            <li><strong class="text-white">ចាក់សោប្រាក់ចំណេញ (Pay Yourself):</strong> នៅពេល Trade ចំណេញបាន $5,000 ដំបូង គួរដកប្រាក់នោះមកទិញជា <span class="text-amber-400 underline font-medium">មាសដុំរូបវន្ត</span> ទុកជាទ្រព្យរឹង។</li>
           </ul>
         </div>
 
@@ -142,169 +392,396 @@
 
     </div>
 
+    <!-- Comparative Recommendation Footer -->
+    <footer class="bg-slate-900/60 border border-slate-800 rounded-2xl p-4 sm:p-5 text-center text-xs text-slate-500 space-y-1">
+      <p>💡 <strong>ដំបូន្មានហិរញ្ញវត្ថុរួម៖</strong> ប្រសិនបើអ្នកមិនចង់រងសម្ពាធផ្លូវចិត្ត ឬការកាត់ខាត ចូរជ្រើសរើស <strong>«មាសដុំរូបវន្ត»</strong>។ ប្រសិនបើអ្នកមានវិន័យតឹងរ៉ឹងលើ Stop Loss និងមានគណនី Swap-Free ចូរប្រើប្រាស់ <strong>«CFD»</strong> សម្រាប់បង្កើនសន្ទុះដើមទុន។</p>
+    </footer>
+
   </div>
 
   <script>
-    // State Elements
-    const initialInput = document.getElementById('initialCapital');
-    const monthlyInput = document.getElementById('monthlyContribution');
-    const rateInput = document.getElementById('annualRate');
-    const yearsInput = document.getElementById('investmentYears');
-    const spreadInput = document.getElementById('shopSpread');
+    // State management
+    let activeMode = 'physical'; // 'physical' or 'cfd'
+    let chartInstance = null;
 
-    const initialValText = document.getElementById('initialValText');
-    const monthlyValText = document.getElementById('monthlyValText');
-    const rateValText = document.getElementById('rateValText');
-    const yearsValText = document.getElementById('yearsValText');
-    const spreadValText = document.getElementById('spreadValText');
+    // DOM Elements - Navigation & Modes
+    const btnModePhysical = document.getElementById('btnModePhysical');
+    const btnModeCfd = document.getElementById('btnModeCfd');
+    const headerModeLabel = document.getElementById('headerModeLabel');
+    const statusDescription = document.getElementById('statusDescription');
+    const badgeCapital = document.getElementById('badgeCapital');
+    const panelTitle = document.getElementById('panelTitle');
+    const btnReset = document.getElementById('btnReset');
 
-    const cardTotalInvested = document.getElementById('cardTotalInvested');
-    const cardNetProfit = document.getElementById('cardNetProfit');
-    const cardFinalValue = document.getElementById('cardFinalValue');
+    // Section Visibility Elements
+    const physicalInputs = document.getElementById('physicalInputs');
+    const cfdInputs = document.getElementById('cfdInputs');
+    const physicalCards = document.getElementById('physicalCards');
+    const cfdCards = document.getElementById('cfdCards');
+    const physicalRules = document.getElementById('physicalRules');
+    const cfdRules = document.getElementById('cfdRules');
 
-    // Chart.js instance setup
-    let dcaChart = null;
+    const chartTitle = document.getElementById('chartTitle');
+    const chartSubtitle = document.getElementById('chartSubtitle');
 
-    function formatCurrency(amount) {
-      return '$' + Math.round(amount).toLocaleString('en-US');
+    // Input Elements
+    const inputInitialCapital = document.getElementById('inputInitialCapital');
+    const valInitialCapital = document.getElementById('valInitialCapital');
+
+    // Physical inputs
+    const inputMonthlyDca = document.getElementById('inputMonthlyDca');
+    const inputAnnualGrowth = document.getElementById('inputAnnualGrowth');
+    const inputYears = document.getElementById('inputYears');
+    const inputSpread = document.getElementById('inputSpread');
+
+    const valMonthlyDca = document.getElementById('valMonthlyDca');
+    const valAnnualGrowth = document.getElementById('valAnnualGrowth');
+    const valYears = document.getElementById('valYears');
+    const valSpread = document.getElementById('valSpread');
+
+    // Physical outputs
+    const outPhysTotalInvested = document.getElementById('outPhysTotalInvested');
+    const outPhysNetProfit = document.getElementById('outPhysNetProfit');
+    const outPhysRoi = document.getElementById('outPhysRoi');
+    const outPhysFinalValue = document.getElementById('outPhysFinalValue');
+    const outPhysWeightEstimate = document.getElementById('outPhysWeightEstimate');
+
+    // CFD inputs
+    const inputCfdTarget = document.getElementById('inputCfdTarget');
+    const inputCfdRisk = document.getElementById('inputCfdRisk');
+    const inputCfdSl = document.getElementById('inputCfdSl');
+    const inputCfdRr = document.getElementById('inputCfdRr');
+    const inputCfdMonths = document.getElementById('inputCfdMonths');
+
+    const valCfdTarget = document.getElementById('valCfdTarget');
+    const valCfdRisk = document.getElementById('valCfdRisk');
+    const valCfdSl = document.getElementById('valCfdSl');
+    const valCfdRr = document.getElementById('valCfdRr');
+    const valCfdMonths = document.getElementById('valCfdMonths');
+
+    // CFD outputs
+    const outCfdLotSize = document.getElementById('outCfdLotSize');
+    const outCfdRiskDollar = document.getElementById('outCfdRiskDollar');
+    const outCfdRiskPct = document.getElementById('outCfdRiskPct');
+    const outCfdRewardDollar = document.getElementById('outCfdRewardDollar');
+    const outCfdTpPips = document.getElementById('outCfdTpPips');
+    const outCfdTargetM1 = document.getElementById('outCfdTargetM1');
+    const outCfdDailyTarget = document.getElementById('outCfdDailyTarget');
+    const outCfdFinalBalance = document.getElementById('outCfdFinalBalance');
+    const outCfdDurationTag = document.getElementById('outCfdDurationTag');
+    const cfdMaxDailyLoss = document.getElementById('cfdMaxDailyLoss');
+    const cfdMaxMonthlyLoss = document.getElementById('cfdMaxMonthlyLoss');
+
+    // Formatters
+    function formatCurrency(num) {
+      return '$' + Math.round(num).toLocaleString('en-US');
     }
 
-    function calculateDCA() {
-      const initial = parseFloat(initialInput.value);
-      const monthly = parseFloat(monthlyInput.value);
-      const rate = parseFloat(rateInput.value) / 100;
-      const years = parseInt(yearsInput.value);
-      const spread = parseFloat(spreadInput.value) / 100;
+    function formatNumber(num) {
+      return num.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
 
-      // Update text displays
-      initialValText.textContent = formatCurrency(initial);
-      monthlyValText.textContent = formatCurrency(monthly);
-      rateValText.textContent = (rate * 100).toFixed(1) + '%';
-      yearsValText.textContent = years + ' ឆ្នាំ';
-      spreadValText.textContent = (spread * 100).toFixed(1) + '%';
+    // Switch Mode Logic
+    function setMode(mode) {
+      activeMode = mode;
 
-      const labels = [];
-      const investedData = [];
-      const portfolioData = [];
+      if (mode === 'physical') {
+        // Button styles
+        btnModePhysical.className = "flex-1 md:flex-initial px-4 sm:px-6 py-2.5 rounded-xl font-semibold text-xs sm:text-sm transition-all duration-200 flex items-center justify-center gap-2 bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 shadow-lg shadow-amber-500/20";
+        btnModeCfd.className = "flex-1 md:flex-initial px-4 sm:px-6 py-2.5 rounded-xl font-semibold text-xs sm:text-sm transition-all duration-200 flex items-center justify-center gap-2 text-slate-400 hover:text-slate-200";
+        
+        // Headers & Labels
+        headerModeLabel.textContent = "| មាសដុំរូបវន្ត DCA";
+        statusDescription.textContent = "យុទ្ធសាស្ត្រសន្សំរយៈពេលវែង • គ្មានហានិភ័យបែកគណនី • កាត់បន្ថយ Spread";
+        panelTitle.textContent = "កំណត់ប៉ារ៉ាម៉ែត្រមាសដុំ";
 
-      const monthlyRate = rate / 12;
+        // Visibility
+        physicalInputs.classList.remove('hidden');
+        cfdInputs.classList.add('hidden');
+        physicalCards.classList.remove('hidden');
+        cfdCards.classList.add('hidden');
+        physicalRules.classList.remove('hidden');
+        cfdRules.classList.add('hidden');
 
-      let currentPortfolio = initial;
-      let currentInvested = initial;
+        chartTitle.textContent = "📈 ការព្យាករណ៍តម្លៃទ្រព្យមាសសរុប (DCA + កំណើនប្រចាំឆ្នាំ)";
+        chartSubtitle.textContent = "គណនាជាមធ្យមភាគប្រចាំឆ្នាំ រួមទាំងការកាត់ទឹក Spread";
+      } else {
+        // Button styles
+        btnModeCfd.className = "flex-1 md:flex-initial px-4 sm:px-6 py-2.5 rounded-xl font-semibold text-xs sm:text-sm transition-all duration-200 flex items-center justify-center gap-2 bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 shadow-lg shadow-amber-500/20";
+        btnModePhysical.className = "flex-1 md:flex-initial px-4 sm:px-6 py-2.5 rounded-xl font-semibold text-xs sm:text-sm transition-all duration-200 flex items-center justify-center gap-2 text-slate-400 hover:text-slate-200";
 
-      labels.push('ឆ្នាំ 0');
-      investedData.push(currentInvested);
-      portfolioData.push(currentPortfolio);
+        // Headers & Labels
+        headerModeLabel.textContent = "| ជួញដូរ CFD (10%/ខែ)";
+        statusDescription.textContent = "ជួញដូរ XAUUSD • Swap-Free 0% • គ្រប់គ្រង Lot Size & Drawdown";
+        panelTitle.textContent = "កំណត់ប៉ារ៉ាម៉ែត្រ Trade CFD";
 
-      for (let y = 1; y <= years; y++) {
-        for (let m = 1; m <= 12; m++) {
-          currentPortfolio = currentPortfolio * (1 + monthlyRate) + monthly;
-          currentInvested += monthly;
-        }
-        labels.push(`ឆ្នាំ ${y}`);
-        investedData.push(currentInvested);
-        portfolioData.push(Math.round(currentPortfolio));
+        // Visibility
+        physicalInputs.classList.add('hidden');
+        cfdInputs.classList.remove('hidden');
+        physicalCards.classList.add('hidden');
+        cfdCards.classList.remove('hidden');
+        physicalRules.classList.add('hidden');
+        cfdRules.classList.remove('hidden');
+
+        chartTitle.textContent = "📈 ការព្យាករណ៍កំណើនសមតុល្យគណនី (Compounding vs Linear)";
+        chartSubtitle.textContent = "ប្រៀបធៀបរវាងការបន្តគុណពូន និងការដកផលចំណេញចេញរាល់ខែ";
       }
 
-      // Value after spread deduction upon selling
-      const netFinalValue = currentPortfolio * (1 - spread);
-      const netProfit = netFinalValue - currentInvested;
-
-      // Update UI cards
-      cardTotalInvested.textContent = formatCurrency(currentInvested);
-      cardFinalValue.textContent = formatCurrency(netFinalValue);
-      cardNetProfit.textContent = (netProfit >= 0 ? '+' : '') + formatCurrency(netProfit);
-      cardNetProfit.className = netProfit >= 0 ? 'text-2xl font-bold text-emerald-400' : 'text-2xl font-bold text-rose-400';
-
-      updateChart(labels, investedData, portfolioData);
+      calculateAndRender();
     }
 
-    function updateChart(labels, investedData, portfolioData) {
-      if (dcaChart) {
-        dcaChart.data.labels = labels;
-        dcaChart.data.datasets[0].data = portfolioData;
-        dcaChart.data.datasets[1].data = investedData;
-        dcaChart.update();
-      } else {
-        const ctx = document.getElementById('dcaChart').getContext('2d');
-        dcaChart = new Chart(ctx, {
-          type: 'line',
-          data: {
-            labels: labels,
-            datasets: [
-              {
-                label: 'តម្លៃទ្រព្យមាសសរុប (DCA + កំណើន)',
-                data: portfolioData,
-                borderColor: '#f59e0b',
-                backgroundColor: 'rgba(245, 158, 11, 0.15)',
-                borderWidth: 2.5,
-                fill: true,
-                tension: 0.25,
-                pointRadius: 3,
-                pointBackgroundColor: '#f59e0b'
-              },
-              {
-                label: 'ដើមទុនវិនិយោគសរុប (Total Invested)',
-                data: investedData,
-                borderColor: '#64748b',
-                backgroundColor: 'transparent',
-                borderWidth: 2,
-                borderDash: [5, 5],
-                pointRadius: 2,
-                tension: 0
-              }
-            ]
+    // Chart Initializer
+    function setupChart() {
+      const ctx = document.getElementById('unifiedChart').getContext('2d');
+      chartInstance = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: [],
+          datasets: [
+            {
+              label: '',
+              data: [],
+              borderColor: '#f59e0b',
+              backgroundColor: 'rgba(245, 158, 11, 0.12)',
+              borderWidth: 2.5,
+              tension: 0.3,
+              fill: true,
+              pointRadius: 3,
+              pointBackgroundColor: '#f59e0b'
+            },
+            {
+              label: '',
+              data: [],
+              borderColor: '#64748b',
+              borderDash: [5, 5],
+              borderWidth: 2,
+              tension: 0,
+              fill: false,
+              pointRadius: 2
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          interaction: {
+            intersect: false,
+            mode: 'index',
           },
-          options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            interaction: {
-              intersect: false,
-              mode: 'index',
-            },
-            plugins: {
-              legend: {
-                position: 'top',
-                labels: {
-                  color: '#94a3b8',
-                  font: { family: "'Kantumruy Pro', sans-serif" }
-                }
-              },
-              tooltip: {
-                callbacks: {
-                  label: function(context) {
-                    return context.dataset.label + ': $' + context.raw.toLocaleString();
-                  }
-                }
+          plugins: {
+            legend: {
+              labels: {
+                color: '#94a3b8',
+                font: { family: "'Kantumruy Pro', sans-serif", size: 12 }
               }
             },
-            scales: {
-              x: {
-                grid: { color: 'rgba(51, 65, 85, 0.3)' },
-                ticks: { color: '#94a3b8' }
-              },
-              y: {
-                grid: { color: 'rgba(51, 65, 85, 0.3)' },
-                ticks: {
-                  color: '#94a3b8',
-                  callback: function(value) {
-                    return '$' + value.toLocaleString();
-                  }
+            tooltip: {
+              callbacks: {
+                label: function(context) {
+                  return context.dataset.label + ': $' + Math.round(context.raw).toLocaleString();
+                }
+              }
+            }
+          },
+          scales: {
+            x: {
+              grid: { color: 'rgba(51, 65, 85, 0.3)' },
+              ticks: { color: '#94a3b8', font: { family: "'Kantumruy Pro', sans-serif" } }
+            },
+            y: {
+              grid: { color: 'rgba(51, 65, 85, 0.3)' },
+              ticks: {
+                color: '#94a3b8',
+                font: { family: "'Kantumruy Pro', sans-serif" },
+                callback: function(value) {
+                  return '$' + (value >= 1000 ? (value / 1000).toFixed(0) + 'k' : value);
                 }
               }
             }
           }
-        });
+        }
+      });
+    }
+
+    // Main Calculator Function
+    function calculateAndRender() {
+      const initialCapital = parseFloat(inputInitialCapital.value);
+      valInitialCapital.textContent = formatCurrency(initialCapital);
+      badgeCapital.textContent = formatCurrency(initialCapital);
+
+      if (activeMode === 'physical') {
+        // Physical Gold DCA logic
+        const monthly = parseFloat(inputMonthlyDca.value);
+        const annualRate = parseFloat(inputAnnualGrowth.value) / 100;
+        const years = parseInt(inputYears.value);
+        const spread = parseFloat(inputSpread.value) / 100;
+
+        valMonthlyDca.textContent = formatCurrency(monthly);
+        valAnnualGrowth.textContent = (annualRate * 100).toFixed(1) + '%';
+        valYears.textContent = years + ' ឆ្នាំ';
+        valSpread.textContent = (spread * 100).toFixed(1) + '%';
+
+        const monthlyRate = annualRate / 12;
+        let currentPortfolio = initialCapital;
+        let currentInvested = initialCapital;
+
+        const labels = ['ឆ្នាំ ០'];
+        const dataPortfolio = [initialCapital];
+        const dataInvested = [initialCapital];
+
+        for (let y = 1; y <= years; y++) {
+          for (let m = 1; m <= 12; m++) {
+            currentPortfolio = currentPortfolio * (1 + monthlyRate) + monthly;
+            currentInvested += monthly;
+          }
+          labels.push(`ឆ្នាំ ${y}`);
+          dataInvested.push(currentInvested);
+          dataPortfolio.push(Math.round(currentPortfolio));
+        }
+
+        const netFinalValue = currentPortfolio * (1 - spread);
+        const netProfit = netFinalValue - currentInvested;
+        const roi = (netProfit / currentInvested) * 100;
+        
+        // Approximate weight estimate based on ~$3,000/damlung reference
+        const approxTael = (netFinalValue / 3000).toFixed(1);
+
+        outPhysTotalInvested.textContent = formatCurrency(currentInvested);
+        outPhysFinalValue.textContent = formatCurrency(netFinalValue);
+        outPhysNetProfit.textContent = (netProfit >= 0 ? '+' : '') + formatCurrency(netProfit);
+        outPhysNetProfit.className = netProfit >= 0 ? 'text-xl sm:text-2xl font-bold text-emerald-400 mt-1' : 'text-xl sm:text-2xl font-bold text-rose-400 mt-1';
+        outPhysRoi.textContent = (roi >= 0 ? '+' : '') + roi.toFixed(1) + '% ROI';
+        outPhysWeightEstimate.textContent = `~${approxTael} តម្លឹង (ប៉ាន់ស្មាន)`;
+
+        // Update Chart
+        if (chartInstance) {
+          chartInstance.data.labels = labels;
+          chartInstance.data.datasets[0].label = 'តម្លៃទ្រព្យមាសសរុប (DCA + កំណើន)';
+          chartInstance.data.datasets[0].data = dataPortfolio;
+          chartInstance.data.datasets[0].borderColor = '#f59e0b';
+          chartInstance.data.datasets[0].backgroundColor = 'rgba(245, 158, 11, 0.12)';
+          chartInstance.data.datasets[0].pointBackgroundColor = '#f59e0b';
+
+          chartInstance.data.datasets[1].label = 'ដើមទុនវិនិយោគសរុប (Total Invested)';
+          chartInstance.data.datasets[1].data = dataInvested;
+          chartInstance.data.datasets[1].borderColor = '#64748b';
+          chartInstance.update();
+        }
+
+      } else {
+        // CFD Gold Trader logic
+        const monthlyTarget = parseFloat(inputCfdTarget.value);
+        const riskPct = parseFloat(inputCfdRisk.value);
+        const slPips = parseFloat(inputCfdSl.value);
+        const rr = parseFloat(inputCfdRr.value);
+        const totalMonths = parseInt(inputCfdMonths.value);
+
+        valCfdTarget.textContent = monthlyTarget + '%';
+        valCfdRisk.textContent = riskPct.toFixed(1) + '%';
+        valCfdSl.textContent = `${slPips} pips ($${(slPips/10).toFixed(1)})`;
+        valCfdRr.textContent = `1 : ${rr.toFixed(2)}`;
+        valCfdMonths.textContent = totalMonths + ' ខែ';
+
+        // 1 standard lot gold = $10 per pip
+        const riskDollar = initialCapital * (riskPct / 100);
+        const pipValuePerLot = 10;
+        let lotSize = riskDollar / (slPips * pipValuePerLot);
+        lotSize = Math.max(0.01, Math.round(lotSize * 100) / 100);
+
+        const rewardDollar = riskDollar * rr;
+        const tpPips = slPips * rr;
+
+        const targetMonth1 = initialCapital * (monthlyTarget / 100);
+        const dailyTarget = targetMonth1 / 20; // 20 trading days
+        const maxDaily = initialCapital * 0.02; // 2% daily limit
+        const maxMonthly = initialCapital * 0.05; // 5% monthly limit
+
+        outCfdLotSize.textContent = lotSize.toFixed(2) + ' Lot';
+        outCfdRiskDollar.textContent = '$' + riskDollar.toFixed(2);
+        outCfdRiskPct.textContent = riskPct.toFixed(1) + '% នៃទុនដើម';
+        outCfdRewardDollar.textContent = '+$' + rewardDollar.toFixed(2);
+        outCfdTpPips.textContent = `TP: ${tpPips.toFixed(0)} pips ($${(tpPips/10).toFixed(1)})`;
+        outCfdTargetM1.textContent = '+$' + Math.round(targetMonth1).toLocaleString();
+        outCfdDailyTarget.textContent = '$' + dailyTarget.toFixed(2);
+
+        cfdMaxDailyLoss.textContent = `$${maxDaily.toFixed(0)} (2%)`;
+        cfdMaxMonthlyLoss.textContent = `$${maxMonthly.toFixed(0)} (5%)`;
+        outCfdDurationTag.textContent = `ក្រោយ ${totalMonths} ខែ`;
+
+        // Projections
+        const labels = ['ខែ ០'];
+        const dataCompound = [initialCapital];
+        const dataLinear = [initialCapital];
+
+        let currentCompound = initialCapital;
+        for (let m = 1; m <= totalMonths; m++) {
+          labels.push(`ខែ ${m}`);
+          currentCompound = currentCompound * (1 + (monthlyTarget / 100));
+          dataCompound.push(Math.round(currentCompound));
+
+          const currentLinear = initialCapital + (targetMonth1 * m);
+          dataLinear.push(Math.round(currentLinear));
+        }
+
+        outCfdFinalBalance.textContent = formatCurrency(currentCompound);
+
+        // Update Chart
+        if (chartInstance) {
+          chartInstance.data.labels = labels;
+          chartInstance.data.datasets[0].label = `សមតុល្យគុណពូន (${monthlyTarget}%/ខែ)`;
+          chartInstance.data.datasets[0].data = dataCompound;
+          chartInstance.data.datasets[0].borderColor = '#f59e0b';
+          chartInstance.data.datasets[0].backgroundColor = 'rgba(245, 158, 11, 0.12)';
+          chartInstance.data.datasets[0].pointBackgroundColor = '#f59e0b';
+
+          chartInstance.data.datasets[1].label = 'ដកប្រាក់ចំណេញចេញរាល់ខែ (Linear)';
+          chartInstance.data.datasets[1].data = dataLinear;
+          chartInstance.data.datasets[1].borderColor = '#38bdf8';
+          chartInstance.update();
+        }
       }
     }
 
-    // Attach listeners
-    [initialInput, monthlyInput, rateInput, yearsInput, spreadInput].forEach(el => {
-      el.addEventListener('input', calculateDCA);
+    // Reset function
+    function resetDefaults() {
+      inputInitialCapital.value = 10000;
+      
+      // Physical defaults
+      inputMonthlyDca.value = 300;
+      inputAnnualGrowth.value = 7.0;
+      inputYears.value = 10;
+      inputSpread.value = 2.0;
+
+      // CFD defaults
+      inputCfdTarget.value = 10;
+      inputCfdRisk.value = 1.0;
+      inputCfdSl.value = 30;
+      inputCfdRr.value = 1.5;
+      inputCfdMonths.value = 12;
+
+      calculateAndRender();
+    }
+
+    // Attach Event Listeners
+    btnModePhysical.addEventListener('click', () => setMode('physical'));
+    btnModeCfd.addEventListener('click', () => setMode('cfd'));
+    btnReset.addEventListener('click', resetDefaults);
+
+    const allInputs = [
+      inputInitialCapital,
+      inputMonthlyDca, inputAnnualGrowth, inputYears, inputSpread,
+      inputCfdTarget, inputCfdRisk, inputCfdSl, inputCfdRr, inputCfdMonths
+    ];
+
+    allInputs.forEach(elem => {
+      elem.addEventListener('input', calculateAndRender);
     });
 
-    // Initial calculation on load
-    calculateDCA();
+    // Boot
+    window.addEventListener('DOMContentLoaded', () => {
+      setupChart();
+      calculateAndRender();
+    });
   </script>
 </body>
 </html>
